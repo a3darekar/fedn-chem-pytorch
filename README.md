@@ -15,12 +15,12 @@ Navigate to 'https://localhost:8090' (or the url of your Reducer) and follow ins
 1. Build the image
 
 ``` bash
-docker build . -t mnist-client:latest
+docker build . -t fedn-pytorch-client:latest
 ```
 
 2. Start a client (edit the path of the volume mounts to provide the absolute path to your local folder.)
 ```
-docker run -v /absolute-path-to-this-folder/data/:/app/data:ro -v /absolute-path-to-this-folder/client.yaml:/app/client.yaml --network fedn_default mnist-client fedn run client -in client.yaml 
+docker run -v /absolute-path-to-this-folder/data/:/app/data:ro -v /absolute-path-to-this-folder/client.yaml:/app/client.yaml --network fedn_default fedn-pytorch-client fedn run client -in client.yaml 
 ```
 (Repeat above steps as needed to deploy additional clients).
 
