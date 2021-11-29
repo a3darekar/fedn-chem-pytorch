@@ -71,7 +71,7 @@ if __name__ == '__main__':
             raise(e)
 
     from fedn.utils.pytorchhelper import PytorchHelper
-    from models.mnist_pytorch_model import create_seed_model
+    from models.pytorch_model import create_seed_model
     helper = PytorchHelper()
     model, loss, optimizer = create_seed_model()
     model.load_state_dict(np_to_weights(helper.load_model(sys.argv[1])))
