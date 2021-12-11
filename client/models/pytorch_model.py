@@ -8,8 +8,7 @@ import yaml
 from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 
-def create_seed_model():
-	exp_config = yaml.load(open("bootstrap_model.yaml", 'r'), Loader=yaml.FullLoader)
+def create_seed_model(exp_config):
 	net_params = exp_config['net_params']
 	net_name = exp_config['net_name']
 

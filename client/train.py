@@ -85,7 +85,7 @@ if __name__ == '__main__':
     from fedn.utils.pytorchhelper import PytorchHelper
     from models.pytorch_model import create_seed_model
     helper = PytorchHelper()
-    model, loss, optimizer = create_seed_model()
+    model, loss, optimizer = create_seed_model(settings)
     model.load_state_dict(np_to_weights(helper.load_model(sys.argv[1])))
     model = train(model, loss, optimizer, settings)
     helper.save_model(weights_to_np(model.state_dict()), sys.argv[2])

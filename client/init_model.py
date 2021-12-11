@@ -11,8 +11,14 @@ def weights_to_np(weights):
 
 if __name__ == '__main__':
 
+    with open('settings.yaml', 'r') as fh:
+        try:
+            settings = dict(yaml.safe_load(fh))
+        except yaml.YAMLError as e:
+            raise(e)
+
 	# Create a seed model and push to Minio
-	model, _, _ = create_seed_model()
+	model, _, _ = create_seed_model(settings)
 	outfile_name = "../seed/seed.npz"
 	helper = PytorchHelper()
 	helper.save_model(weights_to_np(model.state_dict()), outfile_name)

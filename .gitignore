@@ -130,3 +130,6 @@ dmypy.json
 
 # temp
 .idea/
+
+data/clients/*
+data/nmrshift.npz
