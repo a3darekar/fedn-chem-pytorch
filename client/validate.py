@@ -22,16 +22,29 @@ def validate(model, settings):
     def evaluate(model, loss, dataloader):
         model.eval()
         train_loss = 0
-        train_correct = 0
         with torch.no_grad():
             for x, y in dataloader:
-                output = model(x)
-                train_loss += 32 * loss(output, y).item()
-                pred = output.argmax(dim=1, keepdim=True)
-                train_correct += pred.eq(y.view_as(pred)).sum().item()
-            train_loss /= len(dataloader.dataset)
-            train_acc = train_correct / len(dataloader.dataset)
-        return float(train_loss), float(train_acc)
+    
+                x ,y = x[:3], y[:3]
+                batch_size = x.shape[0]
+                x = torch.squeeze(x, 1)
+                x_float = torch.from_numpy(x.float().numpy())
+
+                output = model.forward(x_float)
+                
+                input = torch.zeros((batch_size, 128), dtype=torch.float32)
+                input_mask = torch.zeros((batch_size, 128), dtype=torch.int32)
+                for i, row in enumerate(x):
+                    input_mask[i, int(torch.FloatTensor(row)[70401].item())] = 1
+                    input[i, int(torch.FloatTensor(row)[70401].item())] = float(y[i].item())
+
+                train_loss += 32 * loss(output, input, input_mask).item()
+
+                # pred = output.argmax(dim=1, keepdim=True)
+                # train_correct += pred.eq(y.view_as(pred)).sum().item()
+            train_loss /= batch_size
+            # train_acc = train_correct / len(dataloader.dataset)
+        return float(train_loss), float(0)
 
     # Load train data
     try:
