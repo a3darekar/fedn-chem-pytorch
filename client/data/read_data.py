@@ -18,7 +18,7 @@ def read_data(trainset=True, nr_examples=1000,bias=0.7, data_path='../data/nmrsh
         y = pack['y_test']
 
     X = X.astype('float32')
-    y = y.astype('int64')
+    y = y.astype('float32')
 
     X = np.expand_dims(X, 1)
     X /= 255

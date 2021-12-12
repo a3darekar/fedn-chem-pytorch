@@ -103,10 +103,10 @@ class GraphVertConfigBootstrapWithMultiMax(nn.Module):
 
 	def forward(self, x):
 		batch_size = x.shape[0]
-		print("running training: starting reshape", x[:,:4864].shape)
-		vect_feat = x[:,1:4865].reshape(batch_size, 128, 38)
+		print("running training: starting reshape", x.shape)
+		vect_feat = x[:, 1:4865].reshape(batch_size, 128, 38)
 		print("running training: Vect reshape complete", vect_feat.shape)
-		adj = x[:,4865:-2].reshape(batch_size,4,128,128)
+		adj = x[:, 4865:-1].reshape(batch_size, 4, 128, 128)
 		print("running training: Adj reshape complete", adj.shape)
 		input_mask = torch.zeros((batch_size, 128))
 		for indx, row in enumerate(input_mask):
