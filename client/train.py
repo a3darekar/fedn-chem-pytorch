@@ -55,21 +55,20 @@ def train(model, loss, optimizer, settings):
         for x, y in train_loader:
             optimizer.zero_grad()
 
-            x = x[:3]
+            x ,y = x[:3], y[:3]
             batch_size = x.shape[0]
             x = torch.squeeze(x, 1)
-            print(batch_size, x.shape, y.shape)
             x_float = torch.from_numpy(x.float().numpy())
-            input = torch.zeros((batch_size, 1, 128), dtype=torch.float32)
-            input_mask = torch.zeros((batch_size, 1, 128), dtype=torch.int32)
 
             output = model.forward(x_float)
-            print(output.shape)
+            
+            input = torch.zeros((batch_size, 128), dtype=torch.float32)
+            input_mask = torch.zeros((batch_size, 128), dtype=torch.int32)
             for i, row in enumerate(x):
                 input_mask[i, int(torch.FloatTensor(row)[70401].item())] = 1
-                input[i, int(torch.FloatTensor(row)[70401].item())] = float(output[i])
+                input[i, int(torch.FloatTensor(row)[70401].item())] = float(y[i].item())
 
-            error = loss(output, y)
+            error = loss(output, input, input_mask)
             error.backward()
             optimizer.step()
 
