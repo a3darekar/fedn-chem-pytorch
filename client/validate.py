@@ -25,7 +25,6 @@ def validate(model, settings):
         with torch.no_grad():
             for x, y in dataloader:
     
-                x ,y = x[:3], y[:3]
                 batch_size = x.shape[0]
                 x = torch.squeeze(x, 1)
                 x_float = torch.from_numpy(x.float().numpy())
@@ -38,7 +37,7 @@ def validate(model, settings):
                     input_mask[i, int(torch.FloatTensor(row)[70401].item())] = 1
                     input[i, int(torch.FloatTensor(row)[70401].item())] = float(y[i].item())
 
-                train_loss += 32 * loss(output, input, input_mask).item()
+                train_loss += batch_size * loss(output, input, input_mask).item()
 
                 # pred = output.argmax(dim=1, keepdim=True)
                 # train_correct += pred.eq(y.view_as(pred)).sum().item()

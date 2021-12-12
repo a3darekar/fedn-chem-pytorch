@@ -55,7 +55,6 @@ def train(model, loss, optimizer, settings):
         for x, y in train_loader:
             optimizer.zero_grad()
 
-            x ,y = x[:3], y[:3]
             batch_size = x.shape[0]
             x = torch.squeeze(x, 1)
             x_float = torch.from_numpy(x.float().numpy())

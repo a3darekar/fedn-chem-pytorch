@@ -103,17 +103,13 @@ class GraphVertConfigBootstrapWithMultiMax(nn.Module):
 
 	def forward(self, x):
 		batch_size = x.shape[0]
-		print("running training: starting reshape", x.shape)
 		vect_feat = x[:, 1:4865].reshape(batch_size, 128, 38)
-		print("running training: Vect reshape complete", vect_feat.shape)
 		adj = x[:, 4865:-1].reshape(batch_size, 4, 128, 128)
-		print("running training: Adj reshape complete", adj.shape)
 		input_mask = torch.zeros((batch_size, 128))
 		for indx, row in enumerate(input_mask):
 			m_id = int(x[indx, -1])
 			row[m_id] = 1
 		G = adj
-		print("running training: reshape complete", input_mask.shape)
 		
 		BATCH_N, MAX_N, F_N = vect_feat.shape
 
@@ -133,7 +129,6 @@ class GraphVertConfigBootstrapWithMultiMax(nn.Module):
 			x_1 = [m(g_squeeze) for m in self.mix_out]
 		x_1=x_1[0]
 		ret = {'shift_mu' : x_1}
-		#print(x[index].item())
 		return ret
 
 def apply_masked_1d_norm(norm, x, mask):
@@ -581,7 +576,6 @@ class GraphMatLayerFastPow2(nn.Module):
 		if self.mat_diag:
 			Gprod = torch.eye(MAX_N).unsqueeze(0).unsqueeze(0).to(G.device) * Gprod
 		multi_x = torch.stack([apply_ll(i,x) for i in range(self.GS)], 0)
-		#print("Gprod.shape=", Gprod.shape, "multi_x.shape=", multi_x.shape)
 		xout = torch.einsum("ijkl,jilm->jikm", [Gprod, multi_x])
 
 		if self.norm_by_neighbors != False:
